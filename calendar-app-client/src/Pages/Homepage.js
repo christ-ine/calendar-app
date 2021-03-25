@@ -21,12 +21,12 @@ const Homepage = () => {
     const { success, clientEvents } = eventList
 
     function getEvents() {
-        console.log(clientEvents)
+        
         const dateList = clientEvents.data
-        console.log(dateList)
+        
         dateList.forEach(dates => {
             dates.events.forEach(event => {
-                console.log(event)
+                
                 setMyEventsList(prevState => [...prevState, {
                     title: event.note,
                     start: moment(event.date).toDate(),
@@ -41,6 +41,15 @@ const Homepage = () => {
 
     }
 
+    useEffect(() => {
+        
+        if (success === true) {
+            setMyEventsList([{}])
+            getEvents()
+        }
+        
+    }, [success])
+
 
     const submitHandler = (e) => {
         e.preventDefault();
@@ -48,14 +57,9 @@ const Homepage = () => {
         dispatch(listEvents(inputData))
     }
 
-    useEffect(() => {
-        if (success === true) {
-            setMyEventsList([{}])
-            getEvents()
-        }
-    }, [success])
+    
 
-    console.log(myEventsList)
+    
 
     return (
 
@@ -106,11 +110,8 @@ const Homepage = () => {
                     <Form.Row>
                     <Form.Group as={Col} controlId='action'>
                         <Form.Label>Action</Form.Label>
-                        <Form.Control
-                            type='action'
-                            placeholder='Enter action'
-                            name='action'
-                        >
+                        <Form.Control as="select" defaultValue="getEventsInRange" name="action">
+                            <option value="getEventsInRange">Get Events in Range</option>
                         </Form.Control>
                     </Form.Group>
 
@@ -138,11 +139,11 @@ const Homepage = () => {
                     <Form.Row>
                     <Form.Group as={Col} controlId='offset'>
                         <Form.Label>Offset</Form.Label>
-                        <Form.Control
-                            type='offset'
-                            placeholder='Enter offset'
-                            name='offset'
-                        >
+                        <Form.Control as="select" defaultValue="0" name="offset">
+                            <option value="0">0</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
                         </Form.Control>
                     </Form.Group>
                     <Form.Group as={Col} controlId="limit">
@@ -198,7 +199,7 @@ const Homepage = () => {
                     </Form.Row>
 
                     <Button type='submit' vairant='success'>
-                        Send
+                        Get Events
                 </Button>
                 </Form>
 
